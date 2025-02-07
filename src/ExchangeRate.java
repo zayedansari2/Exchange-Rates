@@ -1,6 +1,9 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import java.util.Scanner;
@@ -10,16 +13,20 @@ public class ExchangeRate {
 
 	static double rate = 1.0;
 	static JSONObject myObject;
+
+	// Method to read API key from a file
+    private static String getApiKey() throws Exception {
+        return new String(Files.readAllBytes(Paths.get("config/apiKey.txt"))).trim();
+    }
 	
 	public static double getRate(String currencyCode) throws Exception {
+
+		
 		try {
 			String firstPartURL = "https://v6.exchangerate-api.com/v6/";
-
-			// Enter your API key here:
-			String key = "";
-			
+			String apiKey = getApiKey();
 			String thirdPartURL = "/latest/USD";
-			String theURL = firstPartURL + key + thirdPartURL;
+			String theURL = firstPartURL + apiKey + thirdPartURL;
 
 			URL url = new URL(theURL);
 			BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
